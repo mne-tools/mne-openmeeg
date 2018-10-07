@@ -1,3 +1,5 @@
+# Authors: Alexandre Gramfort <alexandre.gramfort@inria.fr>
+
 import numpy as np
 import mne
 from mne.transforms import _ensure_trans, invert_transform, Transform
@@ -139,7 +141,7 @@ def _make_forward(eeg_leadfield, ch_names, info, src, trans_fname):
 def make_forward_solution(info, trans_fname, src, bem_model, meg=True,
                           eeg=True, mindist=0.0, ignore_ref=False, n_jobs=1,
                           verbose=None):
-    assert not meg
+    assert not meg  # XXX for now
 
     geom_fname = 'model.geom'
     cond_fname = 'model.cond'
@@ -176,24 +178,19 @@ def make_forward_solution(info, trans_fname, src, bem_model, meg=True,
 
     eeg_electrodes = om.Sensors(electrodes_fname)
 
-    # def make_openmeeg_forward(geom, eeg_electrodes, dipoles):
-    if 1:
-        gauss_order = 3
-        use_adaptive_integration = True
-        # dipole_in_cortex = True
+    gauss_order = 3
+    use_adaptive_integration = True
+    # dipole_in_cortex = True
 
-        hm = om.HeadMat(geom, gauss_order)
-        hm.invert()
-        hminv = hm
-        dsm = om.DipSourceMat(geom, dipoles, gauss_order,
-                              use_adaptive_integration, "Brain")
+    hm = om.HeadMat(geom, gauss_order)
+    hm.invert()
+    hminv = hm
+    dsm = om.DipSourceMat(geom, dipoles, gauss_order,
+                          use_adaptive_integration, "Brain")
 
-        # For EEG
-        h2em = om.Head2EEGMat(geom, eeg_electrodes)
-        eeg_leadfield = om.GainEEG(hminv, dsm, h2em)
-    else:
-        eeg_leadfield = om.Matrix(eeg_electrodes.getPositions().nlin(),
-                                  dipoles.nlin())
+    # For EEG
+    h2em = om.Head2EEGMat(geom, eeg_electrodes)
+    eeg_leadfield = om.GainEEG(hminv, dsm, h2em)
 
     fwd = _make_forward(eeg_leadfield, ch_names, info, src, trans_fname)
 
