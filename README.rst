@@ -36,10 +36,10 @@ Dependencies
 
 The minimum required dependencies to run MNE-OpenMEEG are:
 
-- Python >= 2.7
+- Python >= 3.5
 - NumPy >= 1.8
 - SciPy >= 0.12
-- MNE >= 0.17
+- MNE >= 0.19
 
 
 Mailing lists
