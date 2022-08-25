@@ -6,11 +6,11 @@ print(__doc__)
 
 data_path = sample.data_path()
 
-raw_fname = data_path + '/MEG/sample/sample_audvis_raw.fif'
+raw_fname = data_path / 'MEG/sample/sample_audvis_raw.fif'
 # fwd_fname = data_path + '/MEG/sample/sample_audvis-meg-eeg-oct-6-fwd.fif'
 fwd_fname = 'openmeeg_eeg-fwd.fif'
 
-subjects_dir = data_path + '/subjects'
+subjects_dir = data_path / 'subjects'
 
 # Read the forward solutions with surface orientation
 fwd = mne.read_forward_solution(fwd_fname)
